@@ -1,0 +1,121 @@
+Step-by-Step Notes for Writing to Redshift
+
+#1. Set Up the Redshift Cluster
+- Create Redshift Cluster: Ensure the cluster is created and in the Available state in the AWS Management Console.
+- Gather Required Details:
+  - Cluster endpoint: e.g., `demo-cluster.cw38oxiq9pss.ap-southeast-2.redshift.amazonaws.com`
+  - Port: `5439` (default Redshift port)
+  - Database name: e.g., `dev`
+  - User credentials: e.g., `awsuser` and `Admin_awsuser01`.
+
+
+#2. Configure Redshift for Public Access
+- Enable Public Accessibility:
+  1. Navigate to the Redshift cluster settings in AWS Management Console.
+  2. Modify the cluster settings and enable the Publicly Accessible option.
+  3. Save the changes.
+
+- Update Security Groups:
+  1. Identify the security group associated with the Redshift cluster.
+  2. Add an Inbound Rule:
+     - Type: Custom TCP Rule
+     - Protocol: TCP
+     - Port Range: `5439`
+     - Source: Either:
+       - `0.0.0.0/0` (for public access – not recommended for production), or
+       - Specific IP or CIDR block to restrict access.
+
+
+
+#3. Prepare Required JAR Files
+- Download the Necessary JAR Files:
+  - Redshift JDBC Driver: `redshift-jdbc42-2.1.0.31.jar` (from [Amazon's official site](https://docs.aws.amazon.com/redshift/latest/mgmt/configure-jdbc-connection.html)).
+  - Jackson Libraries for compatibility:
+    - `jackson-databind-2.15.0.jar`
+    - `jackson-core-2.15.0.jar`
+    - `jackson-annotations-2.15.0.jar`
+
+- Place the JAR Files:
+  - Store the JAR files in a directory accessible to your PySpark application, e.g., `C:\Users\Sandeep\PycharmProjects\pyspark_advanced\.venv\Lib\site-packages\pyspark\jars`.
+
+
+
+#4. Configure the PySpark Application
+- Add JARs to the Spark Session:
+  - Use the `spark.jars` configuration to include all necessary JAR files.
+  - Example:
+
+    jars = r"C:\path\to\jackson-databind-2.15.0.jar," \
+           r"C:\path\to\jackson-core-2.15.0.jar," \
+           r"C:\path\to\jackson-annotations-2.15.0.jar," \
+           r"C:\path\to\redshift-jdbc42-2.1.0.31.jar"
+
+    spark = SparkSession.builder \
+        .appName("WriteToRedshift") \
+        .config("spark.jars", jars) \
+        .getOrCreate()
+
+
+- Load the CSV File into a PySpark DataFrame:
+  - Use `spark.read.csv` to load the `employee_new.csv` file:
+
+    employee_df = spark.read \
+        .option("header", "true") \
+        .option("inferSchema", "true") \
+        .csv("/path/to/employee_new.csv")
+
+
+
+
+#5. Ensure the Redshift Table Exists
+- Create the Table in Redshift:
+  - Ensure that the `public.employee` table exists and matches the schema of the data in the CSV file.
+
+- Example SQL to Create the Table:
+  sql
+  CREATE TABLE public.employee (
+      id INT,
+      name VARCHAR(255),
+      age INT,
+      department VARCHAR(255),
+      salary DECIMAL(10, 2)
+  );
+
+
+
+
+#6. Write the DataFrame to Redshift
+- Use the `DataFrame.write` API with the JDBC format to write data into Redshift:
+
+  employee_df.write \
+      .format("jdbc") \
+      .option("url", "jdbc:redshift://<cluster-endpoint>:5439/<database>") \
+      .option("dbtable", "public.employee") \
+      .option("user", "awsuser") \
+      .option("password", "Admin_awsuser01") \
+      .option("driver", "com.amazon.redshift.jdbc42.Driver") \
+      .mode("overwrite") \
+      .save()
+
+
+- Modes:
+  - `overwrite`: Replaces the existing table with new data.
+  - `append`: Appends the data to the existing table without replacing it.
+
+
+
+#7. Validate the Operation
+- Check the Redshift Table:
+  - Log into the Redshift cluster using a SQL client or the AWS Query Editor.
+  - Query the table:
+    sql
+    SELECT * FROM public.employee;
+
+- Confirm that the data from `employee_new.csv` has been successfully written to the table.
+
+
+
+Key Takeaways
+1. Redshift’s public accessibility and security group rules were critical for allowing the Spark application to connect.
+2. Including all required JARs (JDBC driver and Jackson libraries) in the Spark session configuration was essential for enabling compatibility.
+3. Verifying the Redshift table schema ensured that the data was written successfully without errors.

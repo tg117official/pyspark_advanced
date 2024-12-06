@@ -1,0 +1,5 @@
+paths:
+  input: "data/input/employee_new.csv"
+  clean_data: "data/output/clean_data"
+  transformed_data: "data/output/aggregated_data"
+  aggregated_data: "data/output/final_data"
