@@ -1,0 +1,18 @@
+
+cd ~/airflow
+
+source airflow_venv/bin/activate
+
+# only first time
+airflow db init
+
+airflow webserver --port 8080 --host 0.0.0.0
+
+
+airflow scheduler
+
+Now, open your web browser and go to:
+
+
+http://<your-ec2-public-ip>:8080
+s

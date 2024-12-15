@@ -8,11 +8,10 @@ def perform_aggregations(spark, input_path, output_path):
     df = spark.read.parquet(input_path)
 
     # Example aggregation: Total sales by product
-    aggregated_data = df.groupBy("dept").agg(
-        F.sum("salary").alias("total_salary_expense"),
-        F.count("id").alias("employee_count")
+    aggregated_df = df.groupBy("product_id").agg(
+        F.sum("total_salary").alias("total_sales")
     )
 
     # Write aggregated data
-    aggregated_data.write.mode('overwrite').parquet(output_path)
+    aggregated_df.write.mode('overwrite').parquet(output_path)
     print(f"Aggregations completed. Aggregated data saved to {output_path}")

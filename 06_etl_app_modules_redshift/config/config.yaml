@@ -1,0 +1,10 @@
+paths:
+  input: "data/input/employee_new.csv"
+  clean_data: "data/output/clean_data"
+  transformed_data: "data/output/aggregated_data"
+  aggregated_data: "data/output/final_data"
+  s3_input_path : "s3://emr-serverless-tg117/data/input/employee_new.csv"
+  s3_output_path : "s3://emr-serverless-tg117/data/output/clean_data/"
+  redshift_jdbc_url : "jdbc:redshift:iam://redshift-cluster-1.csffclbtp7ut.us-east-2.redshift.amazonaws.com:5439/dev"
+  redshift_table : "public.employee"
+  user : "iam_user"

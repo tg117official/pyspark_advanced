@@ -1,0 +1,36 @@
+Checking the Current DAGs Folder Path
+To check the configured DAGs folder in your Airflow setup, run:
+
+    airflow config get-value core dags_folder
+
+
+    
+
+ADDING AWS CONNECTION :
+
+
+Install the AWS Provider Package
+Install the apache-airflow-providers-amazon package using pip:
+
+pip install apache-airflow-providers-amazon
+This package provides operators, sensors, and hooks for interacting with AWS services like EMR, S3, and Redshift.
+
+2. Verify Installation
+After installation, restart your Airflow scheduler and web server:
+
+
+airflow scheduler
+airflow webserver
+Then check if the Amazon Web Services connection type is available under Admin > Connections.
+
+3. Set Up the AWS Connection
+Go to the Airflow UI and navigate to Admin > Connections.
+Add a new connection or edit an existing one:
+Connection ID: aws_default (or another ID you reference in your DAG)
+Connection Type: Amazon Web Services
+Access Key ID: Your AWS access key (if using static credentials)
+Secret Access Key: Your AWS secret key (if using static credentials)
+Extra: Optionally, specify the region:
+
+{"region_name": "us-east-1"}
+

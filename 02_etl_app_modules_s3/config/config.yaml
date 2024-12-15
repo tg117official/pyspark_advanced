@@ -1,0 +1,5 @@
+paths:
+  input: "s3://pst-18april/data/input/employee_new.csv"
+  clean_data: "s3://pst-18april/data/output/clean_data/"
+  transformed_data: "s3://pst-18april/data/output/aggregated_data/"
+  aggregated_data: "s3://pst-18april/data/output/final_data/"

@@ -1,7 +1,0 @@
-2024-12-06 09:13:20,519 - main_logger - INFO - SparkSession initialized successfully.
-2024-12-06 09:13:24,653 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
-2024-12-06 09:13:24,687 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
-2024-12-06 09:13:26,528 - data_cleaning_logger - INFO - Clean data written to data/output/clean_data successfully.
-2024-12-06 09:13:26,672 - transformations_logger - INFO - Clean data read from data/output/clean_data successfully.
-2024-12-06 09:13:27,587 - transformations_logger - INFO - Transformation applied: Added 'total_salary' column.
-2024-12-06 09:13:28,097 - main_logger - INFO - SparkSession stopped. ETL process completed.
