@@ -1,26 +1,41 @@
-from pyspark import StorageLevel
+import yaml
 from pyspark.sql import SparkSession
-from src.data_cleaning import clean_data
-from src.write_data import write_to_redshift
-from src.utils import read_config
+from src.reader import read_data
+from src.writer import write_data
+
+def load_config(config_path: str) -> dict:
+    """
+    Loads configuration from a YAML file.
+
+    Args:
+        config_path (str): Path to the configuration file.
+
+    Returns:
+        dict: Configuration dictionary.
+    """
+    with open(config_path, "r") as file:
+        return yaml.safe_load(file)
 
 def main():
-    # Initialize SparkSession
-    spark = SparkSession.builder \
-        .appName("Simple ETL App") \
-        .getOrCreate()
-    # spark.sparkContext.addPyFile("s3://emr-serverless-tg117/scripts/etl_app_modules_code.zip")
     # Load configuration
-    config = read_config("s3://emr-serverless-tg117/scripts/config.yaml")
-    conf = config['paths']
+    config_path = "config/config.yaml"
+    config = load_config(config_path)
 
-    df = spark.range(1000)
-    df.persist(StorageLevel())
+    # Initialize Spark session
+    spark = SparkSession.builder \
+        .appName(config["app_name"]) \
+        .getOrCreate()
 
-    # Run ETL steps
-    clean_data(spark, conf['s3_input_path'], conf['s3_output_path'])
-    write_to_redshift(spark, conf['s3_output_path'], conf['redshift_jdbc_url'], conf['redshift_table'], conf['user'])
+    # Read data
+    df = read_data(spark, config)
 
+    # Perform any transformation (if needed) - Example: Simple transformation
+    clean_df = df.dropna()  # Drop rows with null values
+
+    # Write data
+    write_data(clean_df, config)
+
+    # Stop Spark session
     spark.stop()
 
 if __name__ == "__main__":

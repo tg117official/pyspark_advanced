@@ -1,11 +1,7 @@
 from airflow import DAG
 from airflow.providers.amazon.aws.operators.emr import EmrCreateJobFlowOperator, EmrTerminateJobFlowOperator
 from airflow.providers.amazon.aws.sensors.emr import EmrJobFlowSensor
-from airflow.operators.python_operator import PythonOperator
-from datetime import datetime
-
-def print_success():
-    print("EMR Cluster Created Successfully")
+from datetime import datetime, timedelta
 
 # Default arguments for the DAG
 default_args = {
@@ -15,13 +11,14 @@ default_args = {
     'email_on_failure': False,
     'email_on_retry': False,
     'retries': 1,
+    'retry_delay': timedelta(minutes=5),
 }
 
 # Define the DAG
 dag = DAG(
-    'emr_cluster_creation',
+    'emr_start_wait_terminate',
     default_args=default_args,
-    description='A DAG to create and terminate an EMR cluster',
+    description='A DAG to start, monitor, and terminate an EMR cluster',
     schedule_interval=None,
 )
 
@@ -44,17 +41,14 @@ JOB_FLOW_OVERRIDES = {
                 "Market": "ON_DEMAND",
                 "InstanceRole": "CORE",
                 "InstanceType": "m5.xlarge",
-                "InstanceCount": 1,
+                "InstanceCount": 2,
             },
         ],
         "KeepJobFlowAliveWhenNoSteps": True,
         "TerminationProtected": False,
     },
-    "JobFlowRole": "AmazonEMR-InstanceProfile-20241213T162731",
-    "ServiceRole": "AmazonEMR-ServiceRole-20241213T162750",
-
-
-
+    "JobFlowRole": "EMR_EC2_DefaultRole",
+    "ServiceRole": "EMR_DefaultRole",
 }
 
 # Task 1: Create EMR cluster
@@ -62,30 +56,27 @@ create_emr_cluster = EmrCreateJobFlowOperator(
     task_id='create_emr_cluster',
     job_flow_overrides=JOB_FLOW_OVERRIDES,
     aws_conn_id='aws_default',
-    region_name='us-east-1',  # Valid here
     dag=dag,
 )
 
-# # Task 2: Monitor EMR cluster
-# monitor_emr_cluster = EmrJobFlowSensor(
-#     task_id='monitor_emr_cluster',
-#     job_flow_id="{{ task_instance.xcom_pull(task_ids='create_emr_cluster', key='return_value') }}",
-#     aws_conn_id='aws_default',
-#     dag=dag,  # No region_name here
-# )
-
-# Task 3: Terminate EMR cluster
-# terminate_emr_cluster = EmrTerminateJobFlowOperator(
-#     task_id='terminate_emr_cluster',
-#     job_flow_id="{{ task_instance.xcom_pull(task_ids='create_emr_cluster', key='return_value') }}",
-#     aws_conn_id='aws_default',  # Removed region_name
-#     dag=dag,
-# )
-# Task 3: Print "Goodbye"
-task_2 = PythonOperator(
-    task_id='print_goodbye',
-    python_callable=print_success,
+# Task 2: Wait for the cluster to reach WAITING state
+wait_for_emr_cluster = EmrJobFlowSensor(
+    task_id='wait_for_emr_cluster',
+    job_flow_id="{{ task_instance.xcom_pull(task_ids='create_emr_cluster', key='return_value') }}",
+    aws_conn_id='aws_default',
+    target_states=['WAITING'],  # Specifically wait for the WAITING state
+    poke_interval=60,  # Check every 60 seconds
+    timeout=600,  # Timeout after 10 minutes
     dag=dag,
 )
+
+# Task 3: Terminate the EMR cluster
+terminate_emr_cluster = EmrTerminateJobFlowOperator(
+    task_id='terminate_emr_cluster',
+    job_flow_id="{{ task_instance.xcom_pull(task_ids='create_emr_cluster', key='return_value') }}",
+    aws_conn_id='aws_default',
+    dag=dag,
+)
+
 # Set task dependencies
-create_emr_cluster >> task_2
+create_emr_cluster >> wait_for_emr_cluster >> terminate_emr_cluster
