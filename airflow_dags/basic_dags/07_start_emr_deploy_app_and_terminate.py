@@ -15,19 +15,24 @@ default_args = {
 }
 
 dag = DAG(
-    'emr_spark_submit_terminate_on_any',
+    'emr_spark_submit_terminate_on_any_2',
     default_args=default_args,
     description='A DAG to start EMR, submit a Spark job, and terminate the cluster regardless of step outcome',
     schedule_interval=None,
 )
 
-# EMR cluster configuration
+# EMR Cluster Configuration
 JOB_FLOW_OVERRIDES = {
     "Name": "Airflow-EMR-Cluster",
     "ReleaseLabel": "emr-6.7.0",
-    "LogUri": "s3://aws-logs-146334643284-us-east-1/elasticmapreduce/",  # Specify log location
     "Applications": [{"Name": "Hadoop"}, {"Name": "Spark"}],
     "Instances": {
+        "Ec2SubnetId": "subnet-036aa451a22f8a46c",  # Your Subnet
+        "Ec2KeyName": "your-ec2-key",  # Replace with your EC2 Key Pair name
+        "KeepJobFlowAliveWhenNoSteps": True,
+        "TerminationProtected": False,
+        "EmrManagedMasterSecurityGroup": "sg-03d1d92a4d4290b9f",  # Master Security Group
+        "EmrManagedSlaveSecurityGroup": "sg-0e44780606950a879",   # Slave Security Group
         "InstanceGroups": [
             {
                 "Name": "Master nodes",
@@ -44,11 +49,10 @@ JOB_FLOW_OVERRIDES = {
                 "InstanceCount": 2,
             },
         ],
-        "KeepJobFlowAliveWhenNoSteps": True,
-        "TerminationProtected": False,
     },
-    "JobFlowRole": "EMR_EC2_DefaultRole",
-    "ServiceRole": "EMR_DefaultRole",
+    "JobFlowRole": "EMR_EC2_DefaultRole",  # EC2 Instance Profile
+    "ServiceRole": "EMR_DefaultRole",      # EMR Service Role
+    "LogUri": "s3://aws-logs-146334643284-us-east-1/elasticmapreduce",  # Logs Location
 }
 
 
