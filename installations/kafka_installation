@@ -1,0 +1,58 @@
+KAFKA Installation on EC2
+
+
+# Update package list and install Java
+
+sudo apt update
+sudo apt install -y openjdk-11-jdk
+
+# Download and extract Kafka
+
+wget "https://downloads.apache.org/kafka/3.8.0/kafka_2.13-3.8.0.tgz"
+
+sudo tar -xzf kafka_2.13-3.8.0.tgz
+
+sudo mkdir /usr/local/kafka
+
+sudo mv kafka_2.13-3.8.0/* /usr/local/kafka/
+
+sudo chmod 777 -R /usr/local/kafka
+
+# Set up environment variables for Kafka
+
+echo "Setting up environment variables for Kafka..."
+
+echo 'export KAFKA_HOME=/usr/local/kafka' >> ~/.bashrc
+
+echo 'export PATH=$PATH:$KAFKA_HOME/bin' >> ~/.bashrc
+
+source ~/.bashrc
+
+# Verify Kafka Configuration
+
+1. Check `listeners` and `advertised.listeners` in Kafka:
+   - Open the `server.properties` file on your Kafka EC2 instance:
+
+     	nano /path/to/kafka/config/server.properties
+
+   - Ensure that `listeners` and `advertised.listeners` are set correctly:
+
+    	listeners=PLAINTEXT://0.0.0.0:9092
+     	advertised.listeners=PLAINTEXT://your-ec2-public-ip:9092
+
+     - `0.0.0.0` allows Kafka to listen on all interfaces.
+     - `advertised.listeners` ensures that the broker advertises the correct public IP address to clients.
+
+2. Restart Kafka:
+   - After making changes, restart the Kafka service:
+
+     bin/kafka-server-stop.sh
+     bin/kafka-server-start.sh config/server.properties
+
+
+# Check Network Connectivity
+
+2. Open port 9092 | :
+     - Go to EC2 Dashboard → Security Groups → Edit Inbound Rules.
+     - Add a rule: Custom TCP → Port 9092 → Source: Your IP or 0.0.0.0/0.
+     - Add a rule: Custom TCP → Port 9092 → Source: Your IP or 0.0.0.0/0.

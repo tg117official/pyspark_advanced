@@ -93,3 +93,17 @@ py4j.Py4JException: Constructor org.apache.spark.api.python.PythonFunction([clas
 +- Relation [dept#114,id#115,first_name#116,last_name#117,email#118,salary#119,avg_salary#120,salary_category#121] parquet
 
 2024-12-06 09:56:53,316 - main_logger - INFO - SparkSession stopped. ETL process completed.
+2024-12-22 10:29:07,150 - main_logger - INFO - SparkSession initialized successfully.
+2024-12-22 10:29:07,151 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2024-12-22 10:29:07,151 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
+2024-12-22 10:29:11,566 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2024-12-22 10:29:11,566 - data_cleaning_logger - ERROR - Error during data cleaning: expected str, bytes or os.PathLike object, not StructType
+2024-12-22 10:29:11,566 - main_logger - CRITICAL - Critical error in ETL process: expected str, bytes or os.PathLike object, not StructType
+2024-12-22 10:29:12,003 - main_logger - INFO - SparkSession stopped. ETL process completed.
+2024-12-22 10:30:29,137 - main_logger - INFO - SparkSession initialized successfully.
+2024-12-22 10:30:29,138 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2024-12-22 10:30:29,138 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
+2024-12-22 10:30:33,291 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2024-12-22 10:30:33,292 - data_cleaning_logger - ERROR - Error during data cleaning: expected str, bytes or os.PathLike object, not StructType
+2024-12-22 10:30:33,292 - main_logger - CRITICAL - Critical error in ETL process: expected str, bytes or os.PathLike object, not StructType
+2024-12-22 10:30:33,637 - main_logger - INFO - SparkSession stopped. ETL process completed.

@@ -1,0 +1,122 @@
+NIFI Installation
+
+step-by-step guide to installing Apache NiFi on your running Ubuntu EC2 instance:
+
+Step 1: Connect to Your EC2 Instance
+First, connect to your EC2 instance using SSH:
+
+ssh -i <your-key-pair.pem> ubuntu@<your-ec2-public-ip>
+
+
+Step 2: Update System Packages
+Make sure your instance is up to date by running:
+
+sudo apt update && sudo apt upgrade -y
+
+
+Step 3: Install Java
+NiFi requires Java, so install OpenJDK:
+
+sudo apt install openjdk-11-jdk -y
+
+
+You can verify the installation by checking the Java version:
+
+java -version
+
+
+Step 4: Download Apache NiFi
+Visit the [Apache NiFi download page](https://nifi.apache.org/download.html) to find the latest version. For example, to download NiFi 1.21.0:
+
+wget https://dlcdn.apache.org/nifi/1.27.0/nifi-1.27.0-bin.zip
+
+
+Step 5: Extract NiFi
+
+Install unzip :
+
+	sudo apt install unzip
+
+Once downloaded, extract the tar file:
+
+unzip nifi-1.27.0-bin.zip
+
+
+Step 6: Move NiFi to `/opt/`
+Move NiFi to the `/opt` directory (optional, but a common practice for software installations):
+
+sudo mv nifi-1.27.0 /opt/nifi
+
+
+Step 7 : Configure NIFI (/opt/nifi/conf/nifi.properties)
+	$ nano /opt/nifi/conf/nifi.properties
+
+Enable HTTP: Make sure that the HTTP settings are properly configured to allow access via HTTP:
+
+nifi.web.http.host=0.0.0.0
+nifi.web.http.port=8080
+
+
+Disable All HTTPS Settings
+Ensure that all HTTPS-related settings are set to empty in nifi.properties. Reconfirm that these lines are present and correctly configured:
+nifi.web.https.host=
+nifi.web.https.port=
+nifi.security.keystore=
+nifi.security.keystoreType=
+nifi.security.keystorePasswd=
+nifi.security.keyPasswd=
+nifi.security.truststore=
+nifi.security.truststoreType=
+nifi.security.truststorePasswd=
+
+Ensure the following properties are set correctly:
+nifi.remote.input.host=0.0.0.0
+nifi.remote.input.secure=false
+nifi.remote.input.socket.port=8081  # Use an unused port for socket nifi.remote.input.http.enabled=true
+
+The nifi.sensitive.props.key is a string used to encrypt sensitive properties in the nifi.properties file. It is not automatically generated, so you must provide this value manually.
+Key Requirements: The key must be at least 12 characters long. It should be a random, secure string, which you can generate using any password generator or manual process.
+nifi.sensitive.props.key=pV4N9eYxM3GxP9Tj
+Step 6 : Setup environment variables in bashrc
+$sudo nano ~/.bashrc
+# Append following content at the bottom of bashrc
+export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
+export PATH=$PATH:$JAVA_HOME/bin
+export NIFI_PATH=/opt/nifi
+export PATH=$PATH:$NIFI_PATH/bin
+$ source ~/.bashrc
+$ echo $JAVA_HOME
+/usr/lib/jvm/java-11-openjdk-amd64/
+$ echo $NIFI_PATH
+/opt/nifi/
+
+Step 7: Start NiFi
+Navigate to the NiFi `bin` directory and start NiFi:
+
+cd /opt/nifi/bin
+./nifi.sh start
+
+
+You can check the status of NiFi using:
+
+./nifi.sh status
+
+
+Step 8: Open Port 8080 on the EC2 Security Group
+NiFi runs on port 8080 by default. You’ll need to open this port in your EC2 instance’s security group:
+
+1. Go to the AWS Management Console.
+2. Open the EC2 Dashboard and select your instance.
+3. Click on the Security Group linked to your instance.
+4. Under the Inbound Rules tab, click Edit.
+5. Add a new rule:
+   - Type: Custom TCP
+   - Port: 8080
+   - Source: Your IP (or `0.0.0.0/0` to allow access from anywhere)
+6. Save the rule.
+
+
+Step 9: Access the NiFi UI
+Now, in your browser, go to:
+
+http://<your-ec2-public-ip>:8080/nifi

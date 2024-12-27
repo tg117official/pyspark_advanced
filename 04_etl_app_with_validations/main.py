@@ -32,6 +32,9 @@ def main():
 
         # Run ETL steps
         clean_data(spark, paths['input'], paths['clean_data'], schema)
+
+        # Validate the raw DataFrame
+
         apply_transformations(spark, paths['clean_data'], paths['transformed_data'])
         perform_aggregations(spark, paths['transformed_data'], paths['aggregated_data'])
 

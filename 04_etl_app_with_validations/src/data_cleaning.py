@@ -1,11 +1,10 @@
 import logging
-import pyspark.sql.functions as F
+from src.validations import validate_dataframe
 from pyspark.sql.utils import AnalysisException
 
-# Custom logger for data_cleaning module
 logger = logging.getLogger("data_cleaning_logger")
 
-def clean_data(spark, input_path, output_path, schema):
+def clean_data(spark, input_path, output_path, schema_path):
     """
     Cleans the input data by removing nulls and duplicates and validates schema.
     """
@@ -14,17 +13,15 @@ def clean_data(spark, input_path, output_path, schema):
         df = spark.read.csv(input_path, header=True, inferSchema=True)
         logger.info(f"Data read from {input_path} successfully.")
 
-        # Validate schema
-        # try:
-        #     validated_df = spark.createDataFrame(df.rdd, schema)
-        #     logger.info("Schema validation passed.")
-        # except AnalysisException as e:
-        #     logger.error(f"Schema validation failed: {e}")
-        #     raise
+        # Validate the raw DataFrame
+        validate_dataframe(df, schema_path, logger)
 
         # Perform cleaning
         clean_df = df.dropna().dropDuplicates()
         logger.info("Data cleaned by dropping nulls and duplicates.")
+
+        # Validate the cleaned DataFrame
+        validate_dataframe(clean_df, schema_path, logger)
 
         # Write cleaned data
         clean_df.write.mode('overwrite').parquet(output_path)
