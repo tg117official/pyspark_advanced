@@ -6,7 +6,6 @@ from pyspark.sql.types import StructType, StructField, StringType, DoubleType, I
 # Custom logger for utils module
 logger = logging.getLogger("utils_logger")
 
-
 def read_config(config_path):
     """
     Reads configuration from a YAML file.

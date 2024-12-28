@@ -1,31 +1,22 @@
-2024-12-28 09:19:52,392 - main_logger - INFO - SparkSession initialized successfully.
-2024-12-28 09:19:52,394 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
-2024-12-28 09:19:52,395 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
-2024-12-28 09:19:58,272 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
-2024-12-28 09:19:58,272 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
-2024-12-28 09:19:58,306 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
-2024-12-28 09:19:58,306 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
-2024-12-28 09:20:00,021 - data_cleaning_logger - INFO - Clean data written to data/output/clean_data successfully.
-2024-12-28 09:20:00,189 - transformations_logger - INFO - Clean data read from data/output/clean_data successfully.
-2024-12-28 09:20:01,297 - transformations_logger - INFO - Transformation applied and data written successfully.
-2024-12-28 09:20:01,392 - aggregations_logger - INFO - Transformed data read from data/output/aggregated_data successfully.
-2024-12-28 09:20:01,566 - aggregations_logger - ERROR - Error during data aggregations: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `product_id` cannot be resolved. Did you mean one of the following? [`dept`, `id`, `email`, `salary`, `first_name`].;
-'Aggregate ['product_id], ['product_id, sum('total_salary) AS total_sales#139]
-+- Relation [dept#114,id#115,first_name#116,last_name#117,email#118,salary#119,avg_salary#120,salary_category#121] parquet
-
-2024-12-28 09:20:01,569 - main_logger - CRITICAL - Critical error in ETL process: [UNRESOLVED_COLUMN.WITH_SUGGESTION] A column or function parameter with name `product_id` cannot be resolved. Did you mean one of the following? [`dept`, `id`, `email`, `salary`, `first_name`].;
-'Aggregate ['product_id], ['product_id, sum('total_salary) AS total_sales#139]
-+- Relation [dept#114,id#115,first_name#116,last_name#117,email#118,salary#119,avg_salary#120,salary_category#121] parquet
-
-2024-12-28 09:20:01,723 - main_logger - INFO - SparkSession stopped. ETL process completed.
-2024-12-28 09:22:02,998 - main_logger - INFO - SparkSession initialized successfully.
-2024-12-28 09:22:02,999 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
-2024-12-28 09:22:03,000 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
-2024-12-28 09:22:09,091 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
-2024-12-28 09:22:09,091 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
-2024-12-28 09:22:09,130 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
-2024-12-28 09:22:09,131 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
-2024-12-28 09:22:10,907 - data_cleaning_logger - INFO - Clean data written to data/output/clean_data successfully.
-2024-12-28 09:22:11,062 - transformations_logger - INFO - Clean data read from data/output/clean_data successfully.
-2024-12-28 09:22:12,047 - transformations_logger - INFO - Transformation applied and data written successfully.
-2024-12-28 09:22:12,340 - main_logger - INFO - SparkSession stopped. ETL process completed.
+2024-12-28 11:03:50,184 - main_logger - INFO - SparkSession initialized successfully.
+2024-12-28 11:03:50,186 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2024-12-28 11:03:50,186 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
+2024-12-28 11:03:57,462 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2024-12-28 11:03:57,462 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 11:03:57,519 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
+2024-12-28 11:03:57,520 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 11:04:00,240 - data_cleaning_logger - INFO - Clean data written to data/output/clean_data successfully.
+2024-12-28 11:04:00,550 - transformations_logger - INFO - Clean data read from data/output/clean_data successfully.
+2024-12-28 11:04:02,171 - transformations_logger - INFO - Transformation applied and data written successfully.
+2024-12-28 11:04:02,784 - main_logger - INFO - SparkSession stopped. ETL process completed.
+2024-12-28 11:06:39,137 - main_logger - INFO - SparkSession initialized successfully.
+2024-12-28 11:06:39,138 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2024-12-28 11:06:39,138 - main_logger - INFO - Schema loaded successfully. : StructType(List(StructField(id,IntegerType,true),StructField(first_name,StringType,true),StructField(last_name,StringType,true),StructField(email,StringType,true),StructField(dept,StringType,true),StructField(salary,DoubleType,true)))
+2024-12-28 11:06:46,045 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2024-12-28 11:06:46,046 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 11:06:46,098 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
+2024-12-28 11:06:46,098 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 11:06:49,009 - data_cleaning_logger - INFO - Clean data written to data/output/clean_data successfully.
+2024-12-28 11:06:49,260 - transformations_logger - INFO - Clean data read from data/output/clean_data successfully.
+2024-12-28 11:06:50,996 - transformations_logger - INFO - Transformation applied and data written successfully.
+2024-12-28 11:06:51,470 - main_logger - INFO - SparkSession stopped. ETL process completed.

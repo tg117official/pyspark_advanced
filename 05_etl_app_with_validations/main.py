@@ -25,11 +25,11 @@ def main():
         logger.info("SparkSession initialized successfully.")
 
         # Load configuration
-        config = read_config("config/config.yaml")
+        config = read_config(r"C:\Users\Sandeep\PycharmProjects\pyspark_advanced\05_etl_app_with_validations\config\config.yaml")
         paths = config['paths']
 
         # Load schema
-        schema = load_schema(r"C:\Users\Sandeep\PycharmProjects\pyspark_advanced\04_etl_app_with_validations\resources\schema.json")
+        schema = load_schema(r"C:\Users\Sandeep\PycharmProjects\pyspark_advanced\05_etl_app_with_validations\resources\schema.json")
         logger.info(f"Schema loaded successfully. : {schema}")
 
         # Run ETL steps

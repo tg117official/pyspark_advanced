@@ -1,5 +1,10 @@
 import logging
+import yaml
+import logging.config
+
 import pyspark.sql.functions as F
+with open("config/logging_config.yaml", "r") as f:
+    logging.config.dictConfig(yaml.safe_load(f))
 
 # Custom logger for data_cleaning module
 logger = logging.getLogger("data_cleaning_logger")

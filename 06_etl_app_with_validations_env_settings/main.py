@@ -37,7 +37,7 @@ def main():
 
     # Parse command-line arguments
     args = parse_arguments()
-    env = args.env
+    env = args.env  # dev
 
     # Load environment-specific configuration
     config = load_environment_config(env)

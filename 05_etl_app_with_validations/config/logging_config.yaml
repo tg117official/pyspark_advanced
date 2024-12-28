@@ -29,6 +29,10 @@ loggers:
     level: DEBUG
     handlers: [file_handler]
     propagate: no
+  validations_logger:
+    level: DEBUG
+    handlers: [file_handler]
+    propagate: no
 root:
   level: WARNING
   handlers: [file_handler]

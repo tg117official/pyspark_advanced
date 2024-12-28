@@ -1,7 +1,9 @@
+import logging
 import json
 from pyspark.sql import SparkSession
 from pyspark.sql.types import StructType, StructField, IntegerType, StringType, DoubleType
 
+logger = logging.getLogger('validations_logger')
 
 def load_schema(schema_path):
     """Load schema from the provided JSON file."""
@@ -19,7 +21,7 @@ def load_schema(schema_path):
     return StructType(fields)
 
 
-def validate_dataframe(dataframe, schema_path, logger=None):
+def validate_dataframe(dataframe, schema_path, logger):
     """Validate the DataFrame against the schema and log results."""
     try :
         # Load schema from the JSON file
@@ -39,7 +41,7 @@ def validate_dataframe(dataframe, schema_path, logger=None):
 
         # Print the first 5 rows of the DataFrame
         print("First 5 rows of the DataFrame:")
-        dataframe.show(5)
+        dataframe.take(5)
 
         # Print and validate the schema
         print("Schema of the DataFrame:")
@@ -50,12 +52,12 @@ def validate_dataframe(dataframe, schema_path, logger=None):
         print(f"Schema validation result: {'Valid' if is_schema_valid else 'Invalid'}")
 
         # Log the results if logger is provided
-        if logger:
-            logger.info("First 5 rows of the DataFrame:")
-            logger.info(dataframe.limit(5).collect())
-            logger.info("Schema of the DataFrame:")
-            logger.info(dataframe.schema.json())
-            logger.info(f"Schema validation result: {'Valid' if is_schema_valid else 'Invalid'}")
+
+        logger.info("First 5 rows of the DataFrame:")
+        logger.info(dataframe.limit(5).collect())
+        logger.info("Schema of the DataFrame:")
+        logger.info(dataframe.schema.json())
+        logger.info(f"Schema validation result: {'Valid' if is_schema_valid else 'Invalid'}")
     except Exception as e :
         return f"Error Occured During Validation : {e}"
         raise
