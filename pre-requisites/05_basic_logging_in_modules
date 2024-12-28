@@ -1,0 +1,112 @@
+Exercise: Logging Across Multiple Modules
+
+Problem Statement:
+Create a Python program that:
+1. Contains three modules:
+   - `module_a.py`: Logs a message at the `INFO` level.
+   - `module_b.py`: Logs a message at the `WARNING` level.
+   - `module_c.py`: Logs a message at the `ERROR` level.
+2. Uses an entry point file `main.py` to import and call functions from these modules.
+3. Ensures that all logging configurations are defined in `main.py` and shared across all modules.
+4. Writes the logs to a file named `application.log`.
+
+
+
+Explanation
+
+This exercise demonstrates how to:
+1. Share logging configurations across multiple Python modules.
+2. Centralize logging setup in the main entry point of the application.
+3. Write logs to a single file from multiple modules.
+
+
+
+Solution
+
+#Step 1: Create `module_a.py`
+
+import logging
+
+def log_message_from_a():
+    logger = logging.getLogger(__name__)
+    logger.info("Module A: This is an info message.")
+
+
+
+
+#Step 2: Create `module_b.py`
+
+import logging
+
+def log_message_from_b():
+    logger = logging.getLogger(__name__)
+    logger.warning("Module B: This is a warning message.")
+
+
+
+
+#Step 3: Create `module_c.py`
+
+import logging
+
+def log_message_from_c():
+    logger = logging.getLogger(__name__)
+    logger.error("Module C: This is an error message.")
+
+
+
+
+#Step 4: Create `main.py`
+
+import logging
+from module_a import log_message_from_a
+from module_b import log_message_from_b
+from module_c import log_message_from_c
+
+# Configure logging
+logging.basicConfig(
+    filename='application.log',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+if __name__ == "__main__":
+    # Call functions from each module
+    log_message_from_a()
+    log_message_from_b()
+    log_message_from_c()
+
+
+
+
+Step 5: Run the Program
+1. Save all the files (`module_a.py`, `module_b.py`, `module_c.py`, and `main.py`) in the same directory.
+2. Run `main.py`:
+
+   python main.py
+
+3. Open the `application.log` file to see the logged messages.
+
+
+
+Expected Output in `application.log`
+
+2024-12-28 13:00:00 - module_a - INFO - Module A: This is an info message.
+2024-12-28 13:00:01 - module_b - WARNING - Module B: This is a warning message.
+2024-12-28 13:00:02 - module_c - ERROR - Module C: This is an error message.
+
+
+
+
+Key Learning Points
+1. Logger Hierarchies: Each module has its own logger (`__name__`), which helps identify the source of logs.
+2. Centralized Logging Configuration: The logging setup is defined once in `main.py` and used consistently across all modules.
+3. File Logging: All logs are written to a single file, making it easy to monitor the application's behavior.
+
+
+
+Extensions
+- Add a console handler to also display logs in the terminal.
+- Use RotatingFileHandler to handle log file size limits.
+- Add different log levels for testing. For example, log a `DEBUG` message from a new module.

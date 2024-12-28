@@ -1,0 +1,123 @@
+Exercise 1: Basic Logging Setup
+Problem Statement: Write a Python program that logs the following messages with different log levels:
+- A `DEBUG` message for debugging.
+- An `INFO` message for general information.
+- A `WARNING` message for a potential issue.
+- An `ERROR` message for an error.
+- A `CRITICAL` message for a critical problem.
+
+Solution:
+
+import logging
+
+# Configure basic logging
+logging.basicConfig(level=logging.DEBUG, format='%(levelname)s: %(message)s')
+
+# Log messages with different levels
+logging.debug("This is a debug message.")
+logging.info("This is an info message.")
+logging.warning("This is a warning message.")
+logging.error("This is an error message.")
+logging.critical("This is a critical message.")
+
+
+
+
+Exercise 2: Logging to a File
+Problem Statement: Modify the previous program so that all log messages are written to a file named `app.log` instead of the console.
+
+Solution:
+
+import logging
+
+# Configure logging to write to a file
+logging.basicConfig(
+    filename='app.log',
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s'
+)
+
+# Log messages with different levels
+logging.debug("This is a debug message.")
+logging.info("This is an info message.")
+logging.warning("This is a warning message.")
+logging.error("This is an error message.")
+logging.critical("This is a critical message.")
+
+
+
+
+Exercise 3: Log Level Filter
+Problem Statement: Configure logging to display only `WARNING` and above log levels.
+
+Solution:
+
+import logging
+
+# Configure logging to filter only WARNING and above
+logging.basicConfig(level=logging.WARNING, format='%(levelname)s: %(message)s')
+
+# Log messages with different levels
+logging.debug("This debug message will not be shown.")
+logging.info("This info message will not be shown.")
+logging.warning("This is a warning message.")
+logging.error("This is an error message.")
+logging.critical("This is a critical message.")
+
+
+
+
+Exercise 4: Custom Log Formatting
+Problem Statement: Write a Python program that logs messages in the format:
+`LEVEL: [timestamp] Message`.
+
+For example:
+
+WARNING: [2024-12-28 11:30:00] This is a warning message.
+
+
+Solution:
+
+import logging
+
+# Configure logging with custom format
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(levelname)s: [%(asctime)s] %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S'
+)
+
+# Log messages with different levels
+logging.info("This is an info message.")
+logging.warning("This is a warning message.")
+
+
+
+
+Exercise 5: Rotating Log Files
+Problem Statement: Use `RotatingFileHandler` to ensure the log file size is limited to 1 KB and only keeps the last 3 backups.
+
+Solution:
+
+import logging
+from logging.handlers import RotatingFileHandler
+
+# Configure a rotating file handler
+handler = RotatingFileHandler('rotating.log', maxBytes=1024, backupCount=3)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers=[handler]
+)
+
+# Log multiple messages to test rotation
+for i in range(100):
+    logging.info(f"This is log message number {i}.")
+
+
+
+
+How to Practice
+- Change log levels and observe how they affect the output.
+- Combine multiple handlers (e.g., file and console).
+- Use try-except blocks to log errors in different scenarios.

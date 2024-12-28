@@ -33,3 +33,7 @@ Using spark-submit :
     spark-submit .\main.py --env dev
     spark-submit .\main.py --env prod
 
+Using script :
+
+    sh run_pipeline.sh dev
+    sh run_pipeline.sh prod

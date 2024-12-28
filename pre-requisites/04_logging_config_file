@@ -1,0 +1,90 @@
+Comprehensive Exercise: Logging with Configuration File
+
+Problem Statement:
+Write a Python program that:
+1. Reads logging configurations from a configuration file (`logging.conf`).
+2. Logs messages at different levels (`DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`) to a file named `app.log`.
+3. Uses a specific format for log messages: `timestamp - log level - message`.
+
+
+
+Step 1: Create the Configuration File (`logging.conf`)
+
+Create a file named `logging.conf` with the following content:
+
+[loggers]
+keys=root
+
+[handlers]
+keys=fileHandler
+
+[formatters]
+keys=customFormatter
+
+[logger_root]
+level=DEBUG
+handlers=fileHandler
+
+[handler_fileHandler]
+class=FileHandler
+level=DEBUG
+formatter=customFormatter
+args=('app.log', 'a')
+
+[formatter_customFormatter]
+format=%(asctime)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+
+
+
+Step 2: Write the Python Program
+
+Create a Python program (`logging_with_config.py`) that reads the configuration file and logs messages.
+
+
+import logging
+import logging.config
+
+# Load logging configuration from file
+logging.config.fileConfig('logging.conf')
+
+# Get the root logger
+logger = logging.getLogger()
+
+# Log messages at different levels
+logger.debug("This is a debug message.")
+logger.info("Application started successfully.")
+logger.warning("This is a warning message.")
+logger.error("An error occurred while processing the request.")
+logger.critical("Critical error! System shutting down.")
+
+
+
+
+Step 3: Run the Program
+
+1. Save both `logging.conf` and `logging_with_config.py` in the same directory.
+2. Run the Python program:
+
+   python logging_with_config.py
+
+3. Check the generated `app.log` file. It should contain the logs with the specified format.
+
+
+
+Expected Output in `app.log`:
+
+2024-12-28 12:30:00 - DEBUG - This is a debug message.
+2024-12-28 12:30:01 - INFO - Application started successfully.
+2024-12-28 12:30:02 - WARNING - This is a warning message.
+2024-12-28 12:30:03 - ERROR - An error occurred while processing the request.
+2024-12-28 12:30:04 - CRITICAL - Critical error! System shutting down.
+
+
+
+
+Key Learning Points
+1. Separation of Concerns: Configuration details are kept separate from the code, making it easier to manage and modify without changing the Python script.
+2. Scalability: The approach is suitable for larger applications where multiple loggers, handlers, and formatters are needed.
+3. Reusability: The configuration file can be reused across multiple scripts.

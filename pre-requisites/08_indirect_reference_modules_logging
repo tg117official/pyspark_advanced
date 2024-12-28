@@ -1,0 +1,202 @@
+Have a separate custom logger for `module_d`, its functions are indirectly called by other modules (`module_a`, `module_b`, `module_c`).
+The key is to ensure that the logging configuration is loaded only once in `main.py`, and `module_d` retrieves its custom logger as needed.
+
+Here's the updated exercise:
+
+
+
+Extended Exercise: Adding `module_d`
+
+#Requirement
+1. Add `module_d.py` with a function `log_message_from_d()` that logs a message.
+2. Call `log_message_from_d()` from `module_a`, `module_b`, and `module_c`.
+3. Use a single entry point (`main.py`) to load the logging configuration.
+4. Ensure `module_d` uses its own custom logger.
+
+
+
+Solution
+
+#Step 1: Update the Configuration File (`logging.conf`)
+
+Add a logger for `module_d` to the existing configuration:
+ini
+[loggers]
+keys=root,module_a,module_b,module_c,module_d
+
+[handlers]
+keys=fileHandler
+
+[formatters]
+keys=defaultFormatter,moduleAFormatter,moduleBFormatter,moduleCFormatter,moduleDFormatter
+
+[logger_root]
+level=DEBUG
+handlers=fileHandler
+
+[logger_module_a]
+level=INFO
+handlers=fileHandler
+qualname=module_a
+propagate=0
+
+[logger_module_b]
+level=WARNING
+handlers=fileHandler
+qualname=module_b
+propagate=0
+
+[logger_module_c]
+level=ERROR
+handlers=fileHandler
+qualname=module_c
+propagate=0
+
+[logger_module_d]
+level=DEBUG
+handlers=fileHandler
+qualname=module_d
+propagate=0
+
+[handler_fileHandler]
+class=FileHandler
+level=DEBUG
+formatter=defaultFormatter
+args=('application.log', 'a')
+
+[formatter_defaultFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleAFormatter]
+format=%(asctime)s - ModuleA - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleBFormatter]
+format=%(asctime)s - ModuleB - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleCFormatter]
+format=%(asctime)s - ModuleC - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleDFormatter]
+format=%(asctime)s - ModuleD - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+
+
+
+#Step 2: Create `module_d.py`
+
+import logging
+
+# Get the custom logger for module_d
+logger = logging.getLogger('module_d')
+
+def log_message_from_d():
+    logger.debug("Module D: This is a debug message.")
+
+
+
+
+#Step 3: Update Other Modules to Call `module_d`
+
+## module_a.py
+
+import logging
+from module_d import log_message_from_d
+
+# Get the custom logger for module_a
+logger = logging.getLogger('module_a')
+
+def log_message_from_a():
+    logger.info("Module A: This is an info message.")
+    log_message_from_d()
+
+
+
+
+## module_b.py
+
+import logging
+from module_d import log_message_from_d
+
+# Get the custom logger for module_b
+logger = logging.getLogger('module_b')
+
+def log_message_from_b():
+    logger.warning("Module B: This is a warning message.")
+    log_message_from_d()
+
+
+
+
+## module_c.py
+
+import logging
+from module_d import log_message_from_d
+
+# Get the custom logger for module_c
+logger = logging.getLogger('module_c')
+
+def log_message_from_c():
+    logger.error("Module C: This is an error message.")
+    log_message_from_d()
+
+
+
+
+#Step 4: Update the Entry Point (`main.py`)
+
+import logging.config
+from module_a import log_message_from_a
+from module_b import log_message_from_b
+from module_c import log_message_from_c
+
+# Load the logging configuration once
+logging.config.fileConfig('logging.conf')
+
+if __name__ == "__main__":
+    # Call functions from each module
+    log_message_from_a()
+    log_message_from_b()
+    log_message_from_c()
+
+
+
+
+How It Works
+1. Single Configuration Load: The logging configuration is loaded in `main.py` and shared across all modules.
+2. Custom Logger for `module_d`: Even though `module_d`'s function is called indirectly, it uses its own logger (`module_d`) to log messages.
+3. Seamless Integration: Each module calls `log_message_from_d()` without reloading the configuration.
+
+
+
+Step 5: Run the Program
+
+1. Ensure all files (`logging.conf`, `module_a.py`, `module_b.py`, `module_c.py`, `module_d.py`, and `main.py`) are in the same directory.
+2. Run `main.py`:
+   bash
+   python main.py
+
+3. Check the `application.log` file for output.
+
+
+
+Expected Output in `application.log`
+
+2024-12-28 15:00:00 - module_a - INFO - Module A: This is an info message.
+2024-12-28 15:00:00 - module_d - DEBUG - Module D: This is a debug message.
+2024-12-28 15:00:01 - module_b - WARNING - Module B: This is a warning message.
+2024-12-28 15:00:01 - module_d - DEBUG - Module D: This is a debug message.
+2024-12-28 15:00:02 - module_c - ERROR - Module C: This is an error message.
+2024-12-28 15:00:02 - module_d - DEBUG - Module D: This is a debug message.
+
+
+
+
+Key Takeaways
+1. Indirect Logging: Functions in `module_d` log messages seamlessly, even when called indirectly by other modules.
+2. Custom Loggers: Each module, including `module_d`, has its own logger for better traceability.
+3. Single Entry Point: The logging configuration is loaded only once in `main.py`, ensuring consistency and efficiency.

@@ -1,0 +1,497 @@
+                    Working with YAML Files
+Exercise 1: Basic Configuration
+YAML File Content (config.yaml):
+
+app_name: MyApplication
+version: 1.0.0
+author: John Doe
+Task: Write a Python script that:
+Reads the above YAML file.
+Prints the app_name, version, and author in a formatted string.
+
+Exercise 2: Nested Configuration
+YAML File Content (config.yaml):
+
+database:
+  host: localhost
+  port: 5432
+  user: admin
+  password: secret
+Task: Write a Python script that:
+Reads the above YAML file.
+Prints each key-value pair under the database section.
+
+Exercise 3: List Configuration
+YAML File Content (config.yaml):
+
+services:
+  - name: ServiceA
+    url: http://service-a.local
+  - name: ServiceB
+    url: http://service-b.local
+
+Task: Write a Python script that:
+Reads the above YAML file.
+Iterates over the services list and prints each service's name and url.
+
+Exercise 4: Environment-Based Configuration
+YAML File Content (config.yaml):
+
+environment:
+  dev:
+    debug: true
+    database: sqlite:///:memory:
+  prod:
+    debug: false
+    database: postgres://prod-db.local
+
+Task: Write a Python script that:
+Reads the above YAML file.
+Accepts an argument (dev or prod) from the user.
+Prints the configuration details for the specified environment.
+
+Exercise 5: Multi-Level Nested Configuration
+YAML File Content (config.yaml):
+
+app:
+  name: MyComplexApp
+  components:
+    auth:
+      enabled: true
+      method: oauth2
+    cache:
+      enabled: true
+      type: redis
+      config:
+        host: cache.local
+        port: 6379
+
+Task: Write a Python script that:
+Reads the above YAML file.
+Prints the auth and cache configurations with proper formatting.
+
+General Instructions for All Exercises:
+Use the PyYAML library for YAML file reading.
+
+pip install pyyaml
+
+Example Python script structure:
+
+import yaml
+def load_config(file_path):
+    with open(file_path, 'r') as file:
+        return yaml.safe_load(file)
+
+if __name__ == "__main__":
+    config = load_config('config.yaml')
+# Print the required configurations based on the exercise task
+
+Advanced Exercises
+
+Exercise 1: Validation of Configurations
+YAML File Content (config.yaml):
+
+database:
+  host: localhost
+  port: 3306
+  user: root
+  password: secret
+logging:
+  level: INFO
+  file: app.log
+
+Task:
+Write a Python script to:
+Read the YAML file.
+Validate the following:
+The database.port is an integer between 1024 and 65535.
+The logging.level is one of DEBUG, INFO, WARNING, ERROR, or CRITICAL.
+Print the validated configuration or an error message if the validation fails.
+
+Exercise 2: Dynamic Override from Environment Variables
+YAML File Content (config.yaml):
+
+app:
+  name: AdvancedApp
+  mode: production
+database:
+  host: db.prod.local
+  port: 5432
+Task:
+Write a Python script to:
+Read the YAML file.
+Allow overriding any configuration value via environment variables. For example:
+If APP_MODE=development is set in the environment, it should override app.mode.
+If DATABASE_HOST=localhost is set, it should override database.host.
+Print the final configuration after applying the overrides.
+
+Exercise 3: Merge Multiple Configuration Files
+YAML Files:
+base_config.yaml:
+
+app:
+  name: MultiConfigApp
+  debug: false
+database:
+  host: localhost
+  port: 5432
+
+override_config.yaml:
+
+app:
+  debug: true
+database:
+  port: 3306
+logging:
+  level: DEBUG
+  file: app_debug.log
+
+
+Task:
+Write a Python script to:
+Load both YAML files.
+Merge them, with override_config.yaml values taking precedence.
+Print the final merged configuration.
+
+Exercise 4: Generate Configurations Dynamically
+Initial YAML File (template_config.yaml):
+
+app:
+  name: DynamicApp
+  version: 1.0.0
+services:
+  - name: service1
+    url: http://service1.local
+  - name: service2
+    url: http://service2.local
+Task:
+Write a Python script to:
+Load the YAML file.
+Dynamically add a new service (e.g., service3 with a specified URL) based on user input.
+Save the updated configuration back to a new YAML file (updated_config.yaml).
+
+Exercise 5: Handle Multiple Configuration Profiles
+YAML File Content (config.yaml):
+profiles:
+  dev:
+    app:
+      debug: true
+    database:
+      host: localhost
+      port: 5432
+  prod:
+    app:
+      debug: false
+    database:
+      host: db.prod.local
+      port: 3306
+Task:
+Write a Python script to:
+Load the YAML file.
+Accept a profile name (dev or prod) as a command-line argument.
+Extract and print the configuration for the selected profile.
+If no profile is specified, default to dev.
+
+General Tips for Implementation:
+Use argparse for accepting command-line arguments where necessary.
+Validate user inputs and ensure error handling for invalid configurations.
+Use advanced features of PyYAML, such as custom constructors or serializers, for handling complex configurations.
+Example snippet for merging configurations:
+
+from collections.abc import Mapping
+
+def merge_configs(base, override):
+    for key, value in override.items():
+        if isinstance(value, Mapping) and key in base:
+            base[key] = merge_configs(base.get(key, {}), value)
+        else:
+            base[key] = value
+    return base
+
+
+
+Working With JSON Files
+
+Exercise 1: Basic Key-Value Pairs
+JSON File Content (config.json):
+
+{
+  "app_name": "SimpleApp",
+  "version": "1.0.0",
+  "author": "Jane Doe"
+}
+Task: Write a Python script to:
+Read the above JSON file.
+Print the app_name, version, and author in a formatted string.
+
+Exercise 2: Nested Objects
+JSON File Content (config.json):
+
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "username": "admin",
+    "password": "password123"
+  }
+}
+
+Task: Write a Python script to:
+Read the above JSON file.
+Print each key-value pair in the database object.
+
+Exercise 3: List of Objects
+JSON File Content (config.json):
+
+{
+  "services": [
+    {"name": "ServiceA", "url": "http://service-a.local"},
+    {"name": "ServiceB", "url": "http://service-b.local"}
+  ]
+}
+
+Task: Write a Python script to:
+Read the above JSON file.
+Loop through the services list and print the name and url of each service.
+
+Exercise 4: Boolean and Array Values
+JSON File Content (config.json):
+
+{
+  "app_name": "FeatureApp",
+  "features_enabled": true,
+  "supported_languages": ["Python", "JavaScript", "Java"]
+}
+
+Task: Write a Python script to:
+Read the above JSON file.
+Print the app_name and whether features are enabled (features_enabled).
+Print the list of supported_languages.
+
+Exercise 5: Nested and Complex Data
+JSON File Content (config.json):
+
+{
+  "profile": {
+    "name": "John Doe",
+    "age": 30,
+    "address": {
+      "street": "123 Main St",
+      "city": "Springfield",
+      "state": "IL"
+    }
+  }
+}
+Task: Write a Python script to:
+Read the above JSON file.
+Print the name and age under profile.
+Print the full address in a formatted string (e.g., "123 Main St, Springfield, IL").
+
+Example Python Script Template for All Exercises
+
+import json
+
+def load_json(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+if __name__ == "__main__":
+    # Load the JSON file
+    data = load_json('config.json')
+
+    # Print the required data
+    print(data)
+
+Intermediate :
+Exercise 1: Conditional Filtering
+JSON File Content (employees.json):
+
+{
+  "employees": [
+    {"name": "Alice", "age": 25, "department": "HR"},
+    {"name": "Bob", "age": 30, "department": "Engineering"},
+    {"name": "Charlie", "age": 35, "department": "Finance"}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Print the names of all employees in the "Engineering" department.
+
+Exercise 2: Transform Nested Data
+JSON File Content (products.json):
+
+{
+  "products": [
+    {"id": 1, "name": "Laptop", "price": 800, "categories": ["Electronics", "Computers"]},
+    {"id": 2, "name": "Chair", "price": 120, "categories": ["Furniture", "Office"]},
+    {"id": 3, "name": "Pen", "price": 2, "categories": ["Stationery"]}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Create and print a dictionary where the product name is the key, and the price is the value.
+
+Exercise 3: Search by Key
+JSON File Content (library.json):
+
+{
+  "books": [
+    {"title": "The Catcher in the Rye", "author": "J.D. Salinger", "year": 1951},
+    {"title": "To Kill a Mockingbird", "author": "Harper Lee", "year": 1960},
+    {"title": "1984", "author": "George Orwell", "year": 1949}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Accept a year as input from the user.
+Print all books published on or after the given year.
+
+Exercise 4: Group Data by Key
+JSON File Content (students.json):
+
+{
+  "students": [
+    {"name": "John", "grade": "A"},
+    {"name": "Sarah", "grade": "B"},
+    {"name": "Tom", "grade": "A"},
+    {"name": "Anna", "grade": "C"}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Group students by their grades.
+Print the grouped data in a dictionary format. (e.g., {"A": ["John", "Tom"], "B": ["Sarah"], "C": ["Anna"]})
+
+Exercise 5: Extract and Save Filtered Data
+JSON File Content (movies.json):
+
+{
+  "movies": [
+    {"title": "Inception", "year": 2010, "genre": "Sci-Fi"},
+    {"title": "Titanic", "year": 1997, "genre": "Romance"},
+    {"title": "The Matrix", "year": 1999, "genre": "Action"},
+    {"title": "Interstellar", "year": 2014, "genre": "Sci-Fi"}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Filter all movies with the genre "Sci-Fi".
+Save the filtered data to a new JSON file (sci_fi_movies.json).
+
+Example Python Script Template for All Exercises
+
+import json
+
+def load_json(file_path):
+    with open(file_path, 'r') as file:
+        return json.load(file)
+
+if __name__ == "__main__":
+    # Load the JSON file
+    data = load_json('your_file.json')
+
+    # Process and print the required data
+    print(data)
+
+
+Advanced :
+
+Exercise 1: Function Parameters from JSON
+JSON File Content (math_config.json):
+
+{
+  "operations": [
+    {"operation": "add", "a": 5, "b": 10},
+    {"operation": "multiply", "a": 3, "b": 7}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Define two functions: add(a, b) and multiply(a, b).
+Use the data from the JSON file to call the respective functions and print the results.
+
+Exercise 2: Dynamic Function Definition
+JSON File Content (function_config.json):
+
+{
+  "functions": [
+    {"name": "square", "param": "x", "logic": "return x * x"},
+    {"name": "cube", "param": "x", "logic": "return x * x * x"}
+  ]
+}
+
+Task: Write a Python script to:
+Load the JSON file.
+Dynamically create Python functions based on the name, param, and logic provided in the JSON file.
+Call these functions for a given input value and print the results.
+
+Exercise 3: Configurable Function Arguments
+JSON File Content (api_config.json):
+
+{
+  "api_calls": [
+    {"endpoint": "/users", "method": "GET", "params": {"id": 123}},
+    {"endpoint": "/posts", "method": "POST", "data": {"title": "Hello World", "body": "This is a post"}}
+  ]
+}
+
+Task: Write a Python script to:
+Define a generic api_call function that accepts endpoint, method, and other parameters.
+Use the JSON file to fetch the data and invoke the api_call function for each entry.
+
+Exercise 4: Conditional Function Execution
+JSON File Content (task_config.json):
+
+{
+  "tasks": [
+    {"function": "greet", "args": {"name": "Alice"}},
+    {"function": "calculate", "args": {"a": 10, "b": 20}}
+  ]
+}
+
+Task: Write a Python script to:
+Define two functions: greet(name) and calculate(a, b).
+Use the JSON file to decide which function to call and pass the appropriate arguments dynamically.
+
+Exercise 5: Looping Logic with JSON
+JSON File Content (loop_config.json):
+
+{
+  "functions": [
+    {"name": "increment", "start": 0, "end": 5, "step": 1},
+    {"name": "decrement", "start": 10, "end": 5, "step": -1}
+  ]
+}
+
+Task: Write a Python script to:
+Define two functions: increment(start, end, step) and decrement(start, end, step).
+Use the JSON file to fetch the start, end, and step values and call the corresponding functions, printing each step in the process.
+
+Example Script for Dynamic Function Execution
+
+import json
+
+def add(a, b):
+    return a + b
+
+def multiply(a, b):
+    return a * b
+
+def dynamic_function_execution(json_file):
+    with open(json_file, 'r') as file:
+        config = json.load(file)
+
+    for operation in config['operations']:
+        if operation['operation'] == 'add':
+            print(f"Result of addition: {add(operation['a'], operation['b'])}")
+        elif operation['operation'] == 'multiply':
+            print(f"Result of multiplication: {multiply(operation['a'], operation['b'])}")
+
+if __name__ == "__main__":
+    dynamic_function_execution('math_config.json')

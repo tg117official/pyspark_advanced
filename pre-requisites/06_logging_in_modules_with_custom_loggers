@@ -1,0 +1,164 @@
+Extended Exercise: Logging with a Configuration File and Module-Specific Custom Loggers
+
+Problem Statement:
+Extend the previous exercise to:
+1. Use a logging configuration file (`logging.conf`) to define custom loggers for each module (`module_a`, `module_b`, and `module_c`).
+2. Ensure each module uses its respective custom logger for logging.
+3. Write logs to a shared file `application.log` with module-specific logging levels and formats.
+
+
+
+Solution
+
+#Step 1: Create the Logging Configuration File (`logging.conf`)
+Create a `logging.conf` file with the following content:
+
+[loggers]
+keys=root,module_a,module_b,module_c
+
+[handlers]
+keys=fileHandler
+
+[formatters]
+keys=defaultFormatter,moduleAFormatter,moduleBFormatter,moduleCFormatter
+
+[logger_root]
+level=DEBUG
+handlers=fileHandler
+
+[logger_module_a]
+level=INFO
+handlers=fileHandler
+qualname=module_a
+propagate=0
+
+[logger_module_b]
+level=WARNING
+handlers=fileHandler
+qualname=module_b
+propagate=0
+
+[logger_module_c]
+level=ERROR
+handlers=fileHandler
+qualname=module_c
+propagate=0
+
+[handler_fileHandler]
+class=FileHandler
+level=DEBUG
+formatter=defaultFormatter
+args=('application.log', 'a')
+
+[formatter_defaultFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleAFormatter]
+format=%(asctime)s - ModuleA - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleBFormatter]
+format=%(asctime)s - ModuleB - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+[formatter_moduleCFormatter]
+format=%(asctime)s - ModuleC - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+
+
+
+#Step 2: Update the Modules to Use Custom Loggers
+
+## module_a.py
+
+import logging
+import logging.config
+
+# Load the logging configuration
+logging.config.fileConfig('logging.conf')
+
+# Get the custom logger for module_a
+logger = logging.getLogger('module_a')
+
+def log_message_from_a():
+    logger.info("Module A: This is an info message.")
+
+
+
+
+## module_b.py
+
+import logging
+import logging.config
+
+# Load the logging configuration
+logging.config.fileConfig('logging.conf')
+
+# Get the custom logger for module_b
+logger = logging.getLogger('module_b')
+
+def log_message_from_b():
+    logger.warning("Module B: This is a warning message.")
+
+
+
+
+## module_c.py
+
+import logging
+import logging.config
+
+# Load the logging configuration
+logging.config.fileConfig('logging.conf')
+
+# Get the custom logger for module_c
+logger = logging.getLogger('module_c')
+
+def log_message_from_c():
+    logger.error("Module C: This is an error message.")
+
+
+
+
+#Step 3: Update the Entry Point (`main.py`)
+
+from module_a import log_message_from_a
+from module_b import log_message_from_b
+from module_c import log_message_from_c
+
+if __name__ == "__main__":
+    # Call functions from each module
+    log_message_from_a()
+    log_message_from_b()
+    log_message_from_c()
+
+
+
+
+Step 4: Run the Program
+
+1. Ensure `logging.conf`, `module_a.py`, `module_b.py`, `module_c.py`, and `main.py` are in the same directory.
+2. Run `main.py`:
+   bash
+   python main.py
+
+3. Check the `application.log` file for output.
+
+
+
+Expected Output in `application.log`
+
+2024-12-28 14:00:00 - module_a - INFO - Module A: This is an info message.
+2024-12-28 14:00:01 - module_b - WARNING - Module B: This is a warning message.
+2024-12-28 14:00:02 - module_c - ERROR - Module C: This is an error message.
+
+
+
+
+Key Enhancements
+1. Custom Loggers: Each module has its own logger (`module_a`, `module_b`, `module_c`) for better traceability.
+2. Centralized Configuration: All logging settings are managed in `logging.conf`.
+3. Custom Formats: Each module can have a unique log format if needed.
+4. Module-Specific Levels: Allows finer control over the logging level for each module.

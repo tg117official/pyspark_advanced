@@ -1,0 +1,151 @@
+You can load the logging configuration file just once in `main.py`, and all the modules can share the same logging configuration.
+In this case, the `main.py` file initializes the logging configuration, and all modules retrieve their respective custom loggers without reloading the configuration.
+
+Updated Exercise: Single Configuration Load in `main.py`
+
+#Step 1: Update the Configuration File (`logging.conf`)
+Keep the `logging.conf` file unchanged from the previous version:
+
+[loggers]
+keys=root,module_a,module_b,module_c
+
+[handlers]
+keys=fileHandler
+
+[formatters]
+keys=defaultFormatter,moduleAFormatter,moduleBFormatter,moduleCFormatter
+
+[logger_root]
+level=DEBUG
+handlers=fileHandler
+
+[logger_module_a]
+level=INFO
+handlers=fileHandler
+qualname=module_a
+propagate=0
+
+[logger_module_b]
+level=WARNING
+handlers=fileHandler
+qualname=module_b
+propagate=0
+
+[logger_module_c]
+level=ERROR
+handlers=fileHandler
+qualname=module_c
+propagate=0
+
+[handler_fileHandler]
+class=FileHandler
+level=DEBUG
+formatter=defaultFormatter
+args=('application.log', 'a')
+
+[formatter_defaultFormatter]
+format=%(asctime)s - %(name)s - %(levelname)s - %(message)s
+datefmt=%Y-%m-%d %H:%M:%S
+
+
+
+
+#Step 2: Update the Modules to Use Custom Loggers
+
+## module_a.py
+
+import logging
+
+# Get the custom logger for module_a
+logger = logging.getLogger('module_a')
+
+def log_message_from_a():
+    logger.info("Module A: This is an info message.")
+
+
+
+
+## module_b.py
+
+import logging
+
+# Get the custom logger for module_b
+logger = logging.getLogger('module_b')
+
+def log_message_from_b():
+    logger.warning("Module B: This is a warning message.")
+
+
+
+
+## module_c.py
+
+import logging
+
+# Get the custom logger for module_c
+logger = logging.getLogger('module_c')
+
+def log_message_from_c():
+    logger.error("Module C: This is an error message.")
+
+
+
+
+#Step 3: Update the Entry Point (`main.py`)
+Load the logging configuration once in `main.py` and ensure it’s shared across all modules.
+
+
+import logging.config
+from module_a import log_message_from_a
+from module_b import log_message_from_b
+from module_c import log_message_from_c
+
+# Load the logging configuration once
+logging.config.fileConfig('logging.conf')
+
+if __name__ == "__main__":
+    # Call functions from each module
+    log_message_from_a()
+    log_message_from_b()
+    log_message_from_c()
+
+
+
+
+How It Works
+1. The `main.py` file loads the logging configuration using `logging.config.fileConfig()`.
+2. The custom loggers (`module_a`, `module_b`, `module_c`) defined in `logging.conf` are automatically available to each module when they call `logging.getLogger('module_name')`.
+3. Since the configuration is loaded only once, all modules share the same logging setup.
+
+
+
+Step 4: Run the Program
+1. Ensure `logging.conf`, `module_a.py`, `module_b.py`, `module_c.py`, and `main.py` are in the same directory.
+2. Run `main.py`:
+   bash
+   python main.py
+
+3. Check the `application.log` file for output.
+
+
+
+Expected Output in `application.log`
+
+2024-12-28 14:30:00 - module_a - INFO - Module A: This is an info message.
+2024-12-28 14:30:01 - module_b - WARNING - Module B: This is a warning message.
+2024-12-28 14:30:02 - module_c - ERROR - Module C: This is an error message.
+
+
+
+
+Advantages of This Approach
+1. Efficient: The configuration is loaded only once, reducing overhead.
+2. Simplicity: Modules don’t need to reload the configuration, simplifying the code.
+3. Centralized Control: The configuration remains managed in one place (`main.py`).
+
+
+
+Extensions
+1. Add a console handler in the configuration for real-time monitoring.
+2. Use environment variables to dynamically set log file paths or levels.
+3. Add more modules and loggers for additional functionality.
