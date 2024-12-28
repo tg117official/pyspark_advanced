@@ -1,0 +1,35 @@
+06_etl_app_with_validations_env_settings/
+    main.py
+    README.md
+    requirements.txt
+    config/
+        config.yaml
+        logging_config.yaml
+    data/
+        input/
+            employee_new.csv
+        output/
+            aggregated_data/
+            clean_data/
+            final_data/
+    logs/
+        etl_app.log
+    resources/
+        schema.json
+    src/
+        aggregations.py
+        data_cleaning.py
+        transformations.py
+        utils.py
+        validations.py
+
+Example to run :
+
+    python main.py --env dev
+    python main.py --env prod
+
+Using spark-submit :
+
+    spark-submit .\main.py --env dev
+    spark-submit .\main.py --env prod
+
