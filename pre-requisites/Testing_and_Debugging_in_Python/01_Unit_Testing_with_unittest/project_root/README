@@ -1,0 +1,72 @@
+# Project Description
+
+This project demonstrates Python package and module imports for various scenarios, including sibling imports, sub-packages, and external modules.
+
+Project Structure :
+/project_root/
+    setup.py
+    README.md
+    /project_package/
+        __init__.py
+        main.py
+        utils.py
+        /sub_package/
+            __init__.py
+            sub_utils.py
+            nested.py
+    /external_module/
+        external.py
+    /tests/
+        test_main.py
+    /r1/
+        standalone_module.py
+
+
+Purpose of setup.py :
+
+The `setup.py` file is used to package and distribute a Python project.
+It defines metadata (e.g., name, version, dependencies) and allows the project to be installed
+as a package using `pip install`. With `setup.py`, the project can be imported from anywhere after
+installation, making it reusable and shareable.
+
+Without `setup.py`, the project functions only locally.
+You must adjust `PYTHONPATH` or modify `sys.path` for imports.
+This limits the project's usability across environments and makes distribution harder.
+`setup.py` simplifies dependency management and ensures the project adheres to
+standard packaging practices, enhancing portability and reusability.
+
+
+Ways to Run this project :
+
+1. Run Directly:
+   - Navigate to `project_root`.
+   - Use: `python -m project_package.main`
+   - Ensures proper package imports.
+   - Best Practice
+     - Always use python -m for running scripts within packages to maintain correct package structure and imports.
+   - Why python main.py doesn't work
+     - This happens because `python main.py` doesn't recognize the `project_package` as a module since it's not part of
+Python's search path.
+     - Using `python -m project_package.main` runs it as a module within its package, ensuring imports work correctly
+relative to `project_package`. )
+
+2. Run Tests:
+   - Navigate to `project_root`.
+   - Use: `python -m unittest discover -s tests`
+
+3. Set `PYTHONPATH`:
+   - Set the `project_root` path:
+
+     set PYTHONPATH=path\to\project_root
+
+   - Run: `python tests/test_main.py`
+   - ( Note: `PYTHONPATH` is an environment variable that adds directories to Python's module search path (`sys.path`). Setting it to `project_root` lets Python find your project modules. It won’t harm your Python installation, but globally setting it might cause conflicts with other projects. Use temporary settings for safety during development. )
+
+4. Install as a Package:
+   - Run: `pip install -e .` in `project_root`.
+   - Then, import and run from any location:
+
+     from project_package.main import main
+     main()
+   - This will execute `main.py` and call functions from `utils.py`, `sub_utils.py`, and `nested.py`.
+

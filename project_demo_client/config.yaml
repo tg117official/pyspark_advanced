@@ -1,0 +1,8 @@
+app_name: "PySpark S3 Example"
+s3_source_path: "s3://emr-serverless-tg117/data/input/employee_new.csv"
+s3_destination_path: "s3://emr-serverless-tg117/data/output/clean_data/"
+input_format: "csv"
+output_format: "parquet"
+write_mode: "overwrite"
+header: true
+infer_schema: true

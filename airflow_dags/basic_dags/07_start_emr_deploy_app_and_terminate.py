@@ -70,7 +70,7 @@ SPARK_STEPS = [
                 '--archives', 's3://emr-serverless-tg117/scripts/pyspark_venv.tar.gz#environment',
                 '--py-files', 's3://emr-serverless-tg117/scripts/project_new.zip',
                 '--conf', 'spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python',
-                's3://emr-serverless-tg117/scripts/main.py',
+                's3://emr-serverless-tg117/scripts/run_pipeline.py',
             ],
         },
     }

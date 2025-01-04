@@ -1,0 +1,15 @@
+Instructions for Using pdb:
+
+Run the script: When you run the script, it will pause execution at pdb.set_trace().
+
+Step through the code:
+Use n to execute the next line.
+Use c to continue execution until the next breakpoint.
+
+Inspect variables:
+Type student_records to view the processed list after the calculate_totals_and_averages function.
+Type scholarship_candidates to check the list of qualifying students.
+
+Debug specific lines:
+Use l to view the source code around the current breakpoint.
+Set additional breakpoints with break <line_number>.
