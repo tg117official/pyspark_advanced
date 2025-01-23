@@ -1,0 +1,53 @@
+2024-12-28 09:45:14,992 - main_logger - INFO - Starting ETL pipeline in prod environment.
+2024-12-28 09:45:16,904 - main_logger - INFO - SparkSession initialized successfully for prod environment.
+2024-12-28 09:45:16,904 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2024-12-28 09:45:16,904 - main_logger - INFO - Schema loaded successfully: StructType([StructField('id', IntegerType(), True), StructField('first_name', StringType(), True), StructField('last_name', StringType(), True), StructField('email', StringType(), True), StructField('dept', StringType(), True), StructField('salary', DoubleType(), True)])
+2024-12-28 09:45:16,904 - main_logger - INFO - Starting data cleaning step.
+2024-12-28 09:45:22,129 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2024-12-28 09:45:22,130 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 09:45:22,171 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
+2024-12-28 09:45:22,171 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2024-12-28 09:45:23,938 - data_cleaning_logger - INFO - Clean data written to data/output/prod/clean_data successfully.
+2024-12-28 09:45:23,938 - main_logger - INFO - Data cleaning completed.
+2024-12-28 09:45:23,938 - main_logger - INFO - Starting transformations step.
+2024-12-28 09:45:24,092 - transformations_logger - INFO - Clean data read from data/output/prod/clean_data successfully.
+2024-12-28 09:45:25,133 - transformations_logger - INFO - Transformation applied and data written successfully.
+2024-12-28 09:45:25,133 - main_logger - INFO - Transformations completed.
+2024-12-28 09:45:25,382 - main_logger - INFO - SparkSession stopped. ETL process for prod environment completed.
+2025-01-23 11:57:48,556 - main_logger - INFO - Starting ETL pipeline in dev environment.
+2025-01-23 11:57:59,807 - main_logger - INFO - SparkSession initialized successfully for dev environment.
+2025-01-23 11:57:59,808 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2025-01-23 11:57:59,808 - main_logger - INFO - Schema loaded successfully: StructType([StructField('id', IntegerType(), True), StructField('first_name', StringType(), True), StructField('last_name', StringType(), True), StructField('email', StringType(), True), StructField('dept', StringType(), True), StructField('salary', DoubleType(), True)])
+2025-01-23 11:57:59,808 - main_logger - INFO - Starting data cleaning step.
+2025-01-23 11:58:04,867 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2025-01-23 11:58:04,868 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2025-01-23 11:58:04,908 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
+2025-01-23 11:58:04,908 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2025-01-23 11:58:06,683 - data_cleaning_logger - INFO - Clean data written to data/output/dev/clean_data successfully.
+2025-01-23 11:58:06,683 - main_logger - INFO - Data cleaning completed.
+2025-01-23 11:58:06,683 - main_logger - INFO - Starting transformations step.
+2025-01-23 11:58:06,852 - transformations_logger - INFO - Clean data read from data/output/dev/clean_data successfully.
+2025-01-23 11:58:07,798 - transformations_logger - INFO - Transformation applied and data written successfully.
+2025-01-23 11:58:07,798 - main_logger - INFO - Transformations completed.
+2025-01-23 11:58:08,308 - main_logger - INFO - SparkSession stopped. ETL process for dev environment completed.
+2025-01-23 12:05:10,316 - main_logger - INFO - Starting ETL pipeline in dev environment.
+2025-01-23 12:05:19,526 - main_logger - INFO - SparkSession initialized successfully for dev environment.
+2025-01-23 12:05:19,526 - utils_logger - INFO - Schema loaded and converted to StructType successfully.
+2025-01-23 12:05:19,527 - main_logger - INFO - Schema loaded successfully: StructType([StructField('id', IntegerType(), True), StructField('first_name', StringType(), True), StructField('last_name', StringType(), True), StructField('email', StringType(), True), StructField('dept', StringType(), True), StructField('salary', DoubleType(), True)])
+2025-01-23 12:05:19,527 - main_logger - INFO - Starting data cleaning step.
+2025-01-23 12:05:24,631 - data_cleaning_logger - INFO - Data read from data/input/employee_new.csv successfully.
+2025-01-23 12:05:24,631 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2025-01-23 12:05:24,665 - data_cleaning_logger - INFO - Data cleaned by dropping nulls and duplicates.
+2025-01-23 12:05:24,665 - data_cleaning_logger - INFO - Validate Data Executed Successfully.
+2025-01-23 12:05:26,413 - data_cleaning_logger - INFO - Clean data written to data/output/dev/clean_data successfully.
+2025-01-23 12:05:26,413 - main_logger - INFO - Data cleaning completed.
+2025-01-23 12:05:26,413 - main_logger - INFO - Starting transformations step.
+2025-01-23 12:05:26,577 - transformations_logger - INFO - Clean data read from data/output/dev/clean_data successfully.
+2025-01-23 12:05:27,523 - transformations_logger - INFO - Transformation applied and data written successfully.
+2025-01-23 12:05:27,523 - main_logger - INFO - Transformations completed.
+2025-01-23 12:05:27,524 - main_logger - INFO - Starting aggregations step.
+2025-01-23 12:05:27,606 - aggregations_logger - INFO - Transformed data read from data/output/dev/transformed_data successfully.
+2025-01-23 12:05:27,632 - aggregations_logger - INFO - Aggregation applied: Total sales by product calculated.
+2025-01-23 12:05:27,959 - aggregations_logger - INFO - Aggregated data written to data/output/dev/aggregated_data successfully.
+2025-01-23 12:05:27,959 - main_logger - INFO - Aggregations completed.
+2025-01-23 12:05:28,526 - main_logger - INFO - SparkSession stopped. ETL process for dev environment completed.

@@ -1,24 +1,17 @@
 import unittest
-import requests
-from unittest.mock import patch
 
-def fetch_data(api_url):
-    response = requests.get(api_url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        raise ValueError("Failed to fetch data")
+def increment_dict_values(d, increment):
+    return {k: v + increment for k, v in d.items()}
 
+class TestIncrementDict(unittest.TestCase):
+    def test_increment_dict_values(self):
+        self.assertEqual(
+            increment_dict_values({"a": 1, "b": 2}, 1), {"a": 2, "b": 3}
+        )
+        self.assertEqual(
+            increment_dict_values({"x": 0, "y": -1}, 5), {"x": 5, "y": 4}
+        )
 
-class TestAPI(unittest.TestCase):
-    @patch("requests.get")
-    def test_fetch_data_success(self, mock_get):
-        mock_get.return_value.status_code = 200
-        mock_get.return_value.json.return_value = {"key": "value"}
-        self.assertEqual(fetch_data("https://example.com"), {"key": "value"})
-
-    @patch("requests.get")
-    def test_fetch_data_failure(self, mock_get):
-        mock_get.return_value.status_code = 404
-        with self.assertRaises(ValueError):
-            fetch_data("https://example.com")
+# Run all the test cases
+if __name__ == "__main__":
+    unittest.main()
