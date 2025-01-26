@@ -1,0 +1,5 @@
+Deployment Guide
+For production deployment:
+- Use Airflow** for orchestration.
+- Deploy to AWS EMR or Databricks.
+- Store data in S3 or HDFS.

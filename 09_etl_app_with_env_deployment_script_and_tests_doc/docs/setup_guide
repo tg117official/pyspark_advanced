@@ -1,0 +1,37 @@
+3. Setup Guide
+
+3.1 Prerequisites
+Ensure the following are installed:
+- Python 3.7+
+- Apache Spark 3.x
+- Java 8+
+- pip for installing dependencies
+
+3.2 Installation Steps
+Step 1: Create Virtual Environment**
+
+python -m venv venv
+source venv/bin/activate  # (For macOS/Linux)
+venv\Scripts\activate  # (For Windows)
+
+
+Step 2: Install Dependencies**
+
+pip install -r requirements.txt
+
+
+Step 3: Run ETL Pipeline**
+
+python main.py --env dev  # Run in development mode
+python main.py --env prod  # Run in production mode
+
+
+3.3 Running Tests
+Run All Tests
+
+pytest tests/
+
+
+Run a Specific Test File**
+
+pytest tests/test_main.py

@@ -1,0 +1,44 @@
+2. Configuration Guide
+
+2.1 Configuration Files
+config/config.yaml
+
+environments:
+  dev:
+    paths:
+      input: "data/input/employee_new.csv"
+      clean_data: "data/output/dev/clean_data/"
+      transformed_data: "data/output/dev/transformed_data/"
+      aggregated_data: "data/output/dev/aggregated_data/"
+    logging_level: "DEBUG"
+  prod:
+    paths:
+      input: "data/input/employee_new.csv"
+      clean_data: "data/output/prod/clean_data/"
+      transformed_data: "data/output/prod/transformed_data/"
+      aggregated_data: "data/output/prod/aggregated_data/"
+    logging_level: "INFO"
+
+
+- Defines file paths for **dev** and **prod** environments.
+- Adjust paths based on deployment needs.
+
+config/logging_config.yaml
+
+version: 1
+formatters:
+  simple:
+    format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+handlers:
+  file:
+    class: logging.FileHandler
+    filename: "logs/etl_app.log"
+    formatter: simple
+loggers:
+  main_logger:
+    level: DEBUG
+    handlers: [file]
+
+
+- Defines logging settings.
+- Log file stored in `logs/etl_app.log`.

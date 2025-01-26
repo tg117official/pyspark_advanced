@@ -1,0 +1,40 @@
+# PySpark ETL Application Documentation
+
+1. Architecture
+
+1.1 Overview
+This PySpark-based ETL (Extract, Transform, Load) application processes structured data through multiple stages:
+- **Data Cleaning**: Removes null values, handles duplicates, and validates schema.
+- **Data Transformation**: Applies business logic, enriches data, and categorizes records.
+- **Data Aggregation**: Computes aggregated metrics like total sales by product.
+- **Orchestration**: Uses a main script to execute all ETL steps in sequence.
+
+1.2 High-Level Architecture
+
++-------------+       +----------------+       +------------------+       +----------------+
+| Raw Input   | --->  | Data Cleaning  | --->  | Transformations  | --->  | Aggregations  |
++-------------+       +----------------+       +------------------+       +----------------+
+       |                      |                         |                           |
+       v                      v                         v                           v
+    (CSV)                (Parquet)                (Parquet)                   (Parquet)
+
+
+1.3 Components
+1.3.1 Main Script (`main.py`)
+- Handles logging, argument parsing, and environment selection.
+- Calls each ETL stage in sequence.
+
+1.3.2 Configuration (`config/`)
+- `config.yaml`: Defines input/output paths and logging levels.
+- `logging_config.yaml`: Configures logging settings.
+
+1.3.3 Data Processing Modules (`src/`)
+- `data_cleaning.py`: Cleans raw data and validates schema.
+- `transformations.py`: Enriches data and adds new computed fields.
+- `aggregations.py`: Performs aggregations like total sales.
+- `utils.py`: Handles schema loading and configurations.
+- `validations.py`: Validates DataFrame structure.
+
+1.3.4 Testing (`tests/`)
+- Unit tests for each module (`test_*.py`).
+- End-to-end test (`test_main.py`).

@@ -1,11 +1,13 @@
-import sys
-import os
 import pytest
 from pyspark.sql import SparkSession
 from src.data_cleaning import clean_data
 from src.transformations import apply_transformations
 from src.aggregations import perform_aggregations
 from src.utils import load_schema
+
+
+import sys
+import os
 
 # Ensure src is in the Python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../src")))
