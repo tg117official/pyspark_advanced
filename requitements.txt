@@ -4,3 +4,4 @@ boto3
 pandas
 pyarrow
 fastparquet
+py4j
