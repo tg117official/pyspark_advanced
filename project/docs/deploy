@@ -1,0 +1,15 @@
+python -m venv pyspark_venv
+source pyspark_venv/bin/activate
+python3 -m pip install boto3 pyyaml venv-pack
+venv-pack -o pyspark_venv.tar.gz
+
+Cluster Mode :
+spark-submit \
+  --master yarn \
+  --deploy-mode client \
+  --py-files s3://emr-exercises-tg117/project/project.zip \
+  --archives s3://emr-exercises-tg117/project/pyspark_venv.tar.gz#environment \
+  --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
+  --conf spark.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
+s3://emr-exercises-tg117/project/main.py
+

@@ -24,7 +24,7 @@ dag = DAG(
 # EMR Cluster Configuration
 JOB_FLOW_OVERRIDES = {
     "Name": "Airflow-EMR-Cluster",
-    "ReleaseLabel": "emr-6.7.0",
+    "ReleaseLabel": "emr-7.8.0",
     "Applications": [{"Name": "Hadoop"}, {"Name": "Spark"}],
     "Instances": {
         "Ec2SubnetId": "subnet-036aa451a22f8a46c",  # Your Subnet
@@ -46,7 +46,7 @@ JOB_FLOW_OVERRIDES = {
                 "Market": "ON_DEMAND",
                 "InstanceRole": "CORE",
                 "InstanceType": "m5.xlarge",
-                "InstanceCount": 2,
+                "InstanceCount": 1,
             },
         ],
     },
@@ -70,6 +70,7 @@ SPARK_STEPS = [
                 '--archives', 's3://emr-serverless-tg117/scripts/pyspark_venv.tar.gz#environment',
                 '--py-files', 's3://emr-serverless-tg117/scripts/project_new.zip',
                 '--conf', 'spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python',
+                '--conf', 'spark.executorEnv.PYSPARK_PYTHON=./environment/bin/python',
                 's3://emr-serverless-tg117/scripts/run_pipeline.py',
             ],
         },

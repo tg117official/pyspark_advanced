@@ -3,7 +3,7 @@ from pyspark.sql.functions import trim
 
 # Initialize SparkSession
 spark = SparkSession.builder \
-    .appName("EmployeeDataCleaning") \
+    .appName("EmployeeDataCleaning007") \
     .getOrCreate()
 
 # Read raw data
