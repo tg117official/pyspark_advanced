@@ -6,6 +6,16 @@ venv-pack -o pyspark_venv.tar.gz
 Cluster Mode :
 spark-submit \
   --master yarn \
+  --deploy-mode cluster \
+  --py-files s3://emr-exercises-tg117/project/project.zip \
+  --archives s3://emr-exercises-tg117/project/pyspark_venv.tar.gz#environment \
+  --conf spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python \
+  --conf spark.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
+s3://emr-exercises-tg117/project/main.py
+
+
+spark-submit \
+  --master yarn \
   --deploy-mode client \
   --py-files s3://emr-exercises-tg117/project/project.zip \
   --archives s3://emr-exercises-tg117/project/pyspark_venv.tar.gz#environment \
@@ -13,3 +23,8 @@ spark-submit \
   --conf spark.executorEnv.PYSPARK_PYTHON=./environment/bin/python \
 s3://emr-exercises-tg117/project/main.py
 
+
+
+CLI :
+
+aws emr add-steps --cluster-id j-3HFRPLGHGKY2Y --steps Type=Spark,Name="Run Spark job",ActionOnFailure=CONTINUE,Args=["--master","yarn","--deploy-mode","cluster","--archives","s3://emr-exercises-tg117/project/pyspark_venv.tar.gz#environment","--py-files","s3://emr-exercises-tg117/project/project.zip","--conf","spark.yarn.appMasterEnv.PYSPARK_PYTHON=./environment/bin/python","--conf","spark.executorEnv.PYSPARK_PYTHON=./environment/bin/python","s3://emr-exercises-tg117/project/main.py"]
